@@ -3,9 +3,13 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useGetMoviesQuery } from '../../services/TMDB';
 import { MovieList } from '..';
+import { selectGenreOrCategory } from '../../app/Features/currentGenreOrCategory';
 
 function Movies() {
-  const { data, error, isFetching } = useGetMoviesQuery();
+  const [page, setpage] = useState(1);
+  const { genreIdOrCategoryName } = useSelector((state) => state.currentGenreOrCategory);
+
+  const { data, error, isFetching } = useGetMoviesQuery({ genreIdOrCategoryName, page });
   if (isFetching) {
     return (
       <Box display="flex " justifyContent="center">

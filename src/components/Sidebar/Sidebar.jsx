@@ -42,6 +42,7 @@ function Sidebar({ setMobileOpen }) {
   const theme = useTheme();
   const classes = useStyles();
   const { data, isFetching } = useGetGenresQuery();
+  const { genreIdCategoryName } = useSelector((state) => state.currentGenreOrCategory);
 
   // eslint-disable-next-line no-console
   console.log(data);
