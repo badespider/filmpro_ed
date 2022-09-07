@@ -1,15 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { useGetMoviesQuery } from '../../services/TMDB';
-import { MovieList } from '..';
-import { selectGenreOrCategory } from '../../app/Features/currentGenreOrCategory';
+import React, { useState, useEffect } from "react";
+import { Box, CircularProgress, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useGetMoviesQuery } from "../../services/TMDB";
+import { MovieList } from "..";
+import { selectGenreOrCategory } from "../../app/Features/currentGenreOrCategory";
 
 function Movies() {
   const [page, setpage] = useState(1);
-  const { genreIdOrCategoryName } = useSelector((state) => state.currentGenreOrCategory);
+  const { genreIdOrCategoryName, searchQuery } = useSelector(
+    (state) => state.currentGenreOrCategory
+  );
 
-  const { data, error, isFetching } = useGetMoviesQuery({ genreIdOrCategoryName, page });
+  const { data, error, isFetching } = useGetMoviesQuery({
+    genreIdOrCategoryName,
+    page,
+    searchQuery,
+  });
   if (isFetching) {
     return (
       <Box display="flex " justifyContent="center">
@@ -24,12 +30,11 @@ function Movies() {
       </Box>
     );
   }
-  if (error) return 'An error happend';
+  if (error) return "An error happend";
 
   return (
     <div>
       <MovieList movies={data} />
-
     </div>
   );
 }

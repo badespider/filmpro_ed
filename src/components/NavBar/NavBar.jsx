@@ -1,6 +1,7 @@
 /* eslint quotes: ["error", "double"] */
 /* eslint-env es6 */
 /* eslint max-len: ["error", { "code": 80 }] */
+
 import React, { useState } from "react";
 import {
   AppBar,
@@ -20,7 +21,7 @@ import {
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 // eslint-disable-next-line import/named
-import { Sidebar } from "..";
+import { Sidebar, Search } from "..";
 
 import useStyles from "./styles";
 
@@ -49,7 +50,7 @@ function NavBar() {
           <IconButton color="inherit" sx={{ nl: 1 }} onClick={() => {}}>
             {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
-          {!isMobile && "Search..."}
+          {!isMobile && <Search />}
           <div>
             {!isAuthenticated ? (
               <Button color="inherit" onClick={() => {}}>
@@ -73,7 +74,7 @@ function NavBar() {
               </Button>
             )}
           </div>
-          {isMobile && "Search..."}
+          {isMobile && <Search />}
         </Toolbar>
       </AppBar>
       <div>

@@ -1,11 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // b687b4794f57fbfb59711fc03f84e679
 // /movie/popular?api_key=<<api_key>>&language=en-US&page=1
 // const page = 1;
-const tmdbApiKey = 'b687b4794f57fbfb59711fc03f84e679';
+const tmdbApiKey = "b687b4794f57fbfb59711fc03f84e679";
 export const tmdbApi = createApi({
-  reducerPath: 'tmdbApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.themoviedb.org/3' }),
+  reducerPath: "tmdbApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "https://api.themoviedb.org/3" }),
   endpoints: (builder) => ({
     //* Get Movie  by [type]
 
@@ -18,11 +18,21 @@ export const tmdbApi = createApi({
     }),
     getMovies: builder.query({
       // eslint-disable-next-line arrow-body-style
-      query: ({ genreIdOrCategoryName, page }) => {
-        if (genreIdOrCategoryName && typeof genreIdOrCategoryName === 'string') {
+      query: ({ genreIdOrCategoryName, page, searchQuery }) => {
+        // Get Movie by search
+        if (searchQuery) {
+          return `/search/movie?query=${searchQuery}&page=${page}&api_key=${tmdbApiKey}`;
+        }
+        if (
+          genreIdOrCategoryName &&
+          typeof genreIdOrCategoryName === "string"
+        ) {
           return `movie/${genreIdOrCategoryName}?page=${page}&api_key=${tmdbApiKey}`;
         }
-        if (genreIdOrCategoryName && typeof genreIdOrCategoryName === 'number') {
+        if (
+          genreIdOrCategoryName &&
+          typeof genreIdOrCategoryName === "number"
+        ) {
           return `discover/movie?with_genres=${genreIdOrCategoryName}&page=${page}&api_key=${tmdbApiKey}`;
         }
         return `movie/popular?page=${page}&api_key=${tmdbApiKey}`;
@@ -31,7 +41,4 @@ export const tmdbApi = createApi({
   }),
 });
 
-export const {
-  useGetGenresQuery,
-  useGetMoviesQuery,
-} = tmdbApi;
+export const { useGetGenresQuery, useGetMoviesQuery } = tmdbApi;
