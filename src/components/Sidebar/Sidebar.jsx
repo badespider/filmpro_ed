@@ -45,7 +45,7 @@ function Sidebar({ setMobileOpen }) {
   const { genreIdCategoryName } = useSelector((state) => state.currentGenreOrCategory);
 
   // eslint-disable-next-line no-console
-  console.log(data);
+  // console.log(data);
   const dispach = useDispatch();
 
   return (

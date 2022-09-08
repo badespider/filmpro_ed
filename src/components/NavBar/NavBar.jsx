@@ -1,8 +1,9 @@
 /* eslint quotes: ["error", "double"] */
 /* eslint-env es6 */
 /* eslint max-len: ["error", { "code": 80 }] */
-
-import React, { useState } from "react";
+// useContext
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AppBar,
   IconButton,
@@ -20,17 +21,51 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import CreateSessionId, { fetchToken, moviesApi } from "../../app/utils";
+
+import { setUser, userSelector } from "../../app/Features/auth";
+
 // eslint-disable-next-line import/named
 import { Sidebar, Search } from "..";
 
 import useStyles from "./styles";
 
 function NavBar() {
+  const { isAuthenticated, user } = useSelector(userSelector);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const isMobile = useMediaQuery("(max-width:600px)");
   const theme = useTheme();
-  const isAuthenticated = true;
+  // const isAuthenticated = false;
+  console.log(user);
   const [mobileOpen, setmobileOpen] = useState(false);
+  const token = localStorage.getItem("request_token");
+  const sessionIdFromLocalStorage = localStorage.getItem("session_id");
+  useEffect(() => {
+    const logInUser = async () => {
+      if (token) {
+        if (sessionIdFromLocalStorage) {
+          console.log(1);
+          const { data: userData } = await moviesApi.get(
+            `/account?/session_id=${sessionIdFromLocalStorage}`,
+          );
+
+          dispatch(setUser(userData));
+        } else {
+          console.log(2);
+
+          const sessionId = await CreateSessionId();
+          const { data: userData } = await moviesApi.get(
+            `/account?/session_id=${sessionId}`,
+          );
+
+          dispatch(setUser(userData));
+        }
+      }
+    };
+    logInUser();
+  }, [token]);
+
   return (
     <>
       <AppBar position="fixed">
@@ -53,7 +88,7 @@ function NavBar() {
           {!isMobile && <Search />}
           <div>
             {!isAuthenticated ? (
-              <Button color="inherit" onClick={() => {}}>
+              <Button color="inherit" onClick={fetchToken}>
                 Login &nbsp; <AccountCircle />
               </Button>
             ) : (
@@ -64,7 +99,7 @@ function NavBar() {
                 className={classes.linkButton}
                 onClick={() => {}}
               >
-                {!isMobile && <>My Movies &nbsp; </>}{" "}
+                {!isMobile && <>My Movies &nbsp; </>}
                 <Avatar
                   style={{ width: 30, height: 30 }}
                   alt="profile"

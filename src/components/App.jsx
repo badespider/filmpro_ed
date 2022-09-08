@@ -18,7 +18,7 @@ function App() {
           <Route exact path="/actor/:id">
             <Actors />
           </Route>
-          <Route exact path="/">
+          <Route exact path={['/', '/approved']}>
             <Movies />
           </Route>
           <Route exact path="/profile/:id">
