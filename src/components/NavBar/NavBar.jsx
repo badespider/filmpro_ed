@@ -21,7 +21,7 @@ import {
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
-import CreateSessionId, { fetchToken, moviesApi } from "../../app/utils";
+import { createSessionId, fetchToken, moviesApi } from "../../app/utils";
 
 import { setUser, userSelector } from "../../app/Features/auth";
 
@@ -41,22 +41,23 @@ function NavBar() {
   const [mobileOpen, setmobileOpen] = useState(false);
   const token = localStorage.getItem("request_token");
   const sessionIdFromLocalStorage = localStorage.getItem("session_id");
+
   useEffect(() => {
     const logInUser = async () => {
       if (token) {
         if (sessionIdFromLocalStorage) {
           console.log(1);
           const { data: userData } = await moviesApi.get(
-            `/account?/session_id=${sessionIdFromLocalStorage}`,
+            `/account?session_id=${sessionIdFromLocalStorage}`,
           );
 
           dispatch(setUser(userData));
         } else {
           console.log(2);
 
-          const sessionId = await CreateSessionId();
+          const sessionId = await createSessionId();
           const { data: userData } = await moviesApi.get(
-            `/account?/session_id=${sessionId}`,
+            `/account?session_id=${sessionId}`,
           );
 
           dispatch(setUser(userData));
@@ -95,7 +96,7 @@ function NavBar() {
               <Button
                 color="inherit"
                 component={Link}
-                to="/profile/:id"
+                to={`/profile/${user.id}`}
                 className={classes.linkButton}
                 onClick={() => {}}
               >
