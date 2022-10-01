@@ -19,6 +19,7 @@ function MovieInfo() {
   const classes = useStyles();
   const isMovieFavorited = true;
   const isMovieWatchlisted = true;
+  const [open, setOpen] = useState(second);
   const { data: recommendations, isFetching: isrecommendationFetching } = useGetRecommendationsQuery({ list: '/recommendations', movie_id: id });
 
   const addToFavorites = () => {};
@@ -124,6 +125,7 @@ function MovieInfo() {
         {recommendations ? <MovieList movies={recommendations} numberOfMovies={12} /> : <Box>sorry nothing was found</Box>}
 
       </Box>
+      <Modal closeAfterTransition className={classes.modal} open={open} />
     </Grid>
   );
 }
