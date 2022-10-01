@@ -69,7 +69,7 @@ function MovieInfo() {
         <Typography style={{ marginBottom: '2rem' }}>
           {data?.overview}
         </Typography>
-        <Typography variant="h5 " gutterBottom>Top Cast</Typography>
+        <Typography variant="h5 " gutterBottom style={{ marginTop: '10px' }}>Top Cast</Typography>
       </Grid>
     </Grid>
   );
